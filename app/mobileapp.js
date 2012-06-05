@@ -150,7 +150,7 @@ function insert_city_events( )
 
     if( has_a_city_ever_been_selected ) {
 	hidedetail( );
-	myScroll.scrollTo( 0, 0, 1000 );   // Must scroll to top or does
+	myScroll.scrollTo( 0, 0, 0 );   // Must scroll to top or does
     } else {
 	showoptions( );
     }
@@ -165,7 +165,7 @@ function shownewmonth( tohide, toshow) {
    setHeight();
    if(myScroll){
      myScroll.refresh();
-     myScroll.scrollTo( 0, 0, 1000 );   // Must scroll to top or does not show
+     myScroll.scrollTo( 0, 0, 0 );   // Must scroll to top or does not show
    }
 }
 
@@ -305,7 +305,7 @@ function loaddetail( eventid ) {
    setHeight();     // Reset vertical height of middle space when DOM changes
    if(myScroll){    // Is iScroll initialized?
        myScroll.refresh();
-       myScroll.scrollTo( 0, 0, 1000 );   // Scroll to top to show text
+       myScroll.scrollTo( 0, 0, 0 );   // Scroll to top to show text
    } else {
        // for show detail also top off the window
        $('#wrapper').scrollTop(0);
@@ -379,7 +379,7 @@ function setgriddate( )
    setdate( id );
 
    if(myScroll)
-       myScroll.scrollTo( 0, 0, 1000 );   // Scroll to top or does not show
+       myScroll.scrollTo( 0, 0, 0 );   // Scroll to top or does not show
    else
        window.scroll(0,0);  // Handles if iScroll did not initialize
 }
@@ -450,7 +450,7 @@ function scroll_list( )
        myScroll.refresh();
 
        if( showinggrid ) {
-	   myScroll.scrollTo( 0, 0, 1000 );   // Must scroll to top or does
+	   myScroll.scrollTo( 0, 0, 0 );   // Must scroll to top or does
 	   // not show
        } else {
 	   myScroll.scrollToElement( "#list" + selected_date, 0 );
