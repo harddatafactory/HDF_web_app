@@ -9,8 +9,8 @@ function initialize_iScroll() {
 
 // Change wrapper height based on device orientation. Not strictly needed by iScroll, you may also use pure CSS techniques.
 function setHeight() {
-    var headerH = $('#header').height();
-    var footerH = $('#footer').height();
+    var headerH = $('#header').is(":visible") ? $('#header').height() : 0;
+    var footerH = $('#footer').is(":visible") ? $('#footer').height() : 0;
     var wrapperH = $(window).height() - headerH - footerH;
     $('#wrapper').height( wrapperH );
 }
