@@ -65,11 +65,12 @@ function change_city( new_city )
    // But not if more recent than one day
     if( localStorage.last_update == todaydate
 	&& localStorage.currentcity == new_city ) {
-	citylist = jQuery.parseJSON(localStorage.citylist);
-	citydata = jQuery.parseJSON(localStorage.citydata);
-	hdf_strings = jQuery.parseJSON(localStorage.hdf_strings);
-	hdf_events = jQuery.parseJSON(localStorage.hdf_events);
-	insert_city_events( );
+      citylist = jQuery.parseJSON(localStorage.citylist);
+      citydata = jQuery.parseJSON(localStorage.citydata);
+      hdf_strings = jQuery.parseJSON(localStorage.hdf_strings);
+      hdf_events = jQuery.parseJSON(localStorage.hdf_events);
+      current_city = localStorage.currentcity;
+      insert_city_events( );
     } else {
       $("#mytodaylist").empty();
       $("#monthcal").empty();
