@@ -592,8 +592,9 @@ function make_grid_cal( )
 	// 7 columns, one for each day of the week
 	html_str += "</td></tr>\n";
 	html_str += "<tr class='dayofweek'>\n";
-	html_str += "<td>Sun</td><td>Mon</td><td>Tue</td><td>Wed</td><td>Thu</td><td>Fri</td><td>Sat</td>\n";
-	html_str += "</tr>\n";
+  var width = $(window).width()/7
+  html_str += "<td width='"+(width+1)+"'>Sun</td><td width='"+(width)+"'>Mon</td><td width='"+(width)+"'>Tue</td><td width='"+(width+1)+"'>Wed</td><td width='"+(width)+"'>Thu</td><td width='"+(width)+"'>Fri</td><td width='"+(width+1)+"'>Sat</td>\n";
+  html_str += "</tr>\n";
 
 	//--------------------------------------------------------------------
 	// Grab the first day of the month and extrapolate back one Sunday
