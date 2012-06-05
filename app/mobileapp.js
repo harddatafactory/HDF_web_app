@@ -15,29 +15,29 @@ var hdf_strings; // All stings needed for event listings
 var hdf_events; // An array of events that index into hdf_strings
 var current_city = "";
 
+
 var has_a_city_ever_been_selected = 0;
 
 //----------------------------------------------------------------------
 // Set up which elements of the calendar grid can and cannot be clicked on
 function initialize_app( )
 {
-    // Click event website and it opens in the device's browser
-    // DEVICE SPECIFIC CODE GOES HERE, use var current_event
-    // $(".external-link").live('click', function(e) {
-    //   return false;
-    // });
+  
+    DeviceSpecific.setup();
+    $(".external-link").live('click', function(e) {
+      if(DeviceSpecific.openInBrowser($(this).attr('href')))
+        e.stopPropigation();
+    });
 
-    // Click "add to calendar" and event is added to device's calendar
-    // DEVICE SPECIFIC CODE GOES HERE, use var current_event
-    // $(".calendar-link").live('click', function(e) {
-    // return false;
-    // });
+    $(".calendar-link").live('click', function(e) {
+      if(DeviceSpecific.addToCalender($('#detail-Title').html(), generateEventString(current_event), $('#detail-Address').html(), getStart(current_event), getEnd(current_event)))
+        e.stopPropigation();
+    });
 
-    // Click "email this event" and an email is built in device's emailer
-    // DEVICE SPECIFIC CODE GOES HERE, use var current_event
-    // $(".email-link").live('click', function(e) {
-    //   return false;
-    // });
+    $(".email-link").live('click', function(e) {
+      if(DeviceSpecific.email('', $('#detail-Title').html(), generateEventString(current_event), $('#detail-Date').html()))
+        e.stopPropigation();
+    });
 
     var today = new Date( );
     todaydate = date_to_string(today);
@@ -45,9 +45,9 @@ function initialize_app( )
 
     // Use HTML5 local storage to see if city already selected
     if(localStorage && localStorage.currentcity) {
-	select_city(localStorage.currentcity);
+      select_city(localStorage.currentcity);
     } else {
-	change_city('boston');
+      change_city('boston');
     }
 };
 
@@ -698,4 +698,84 @@ function date_to_string( d )
     str += mday;
 
     return str;
+}
+
+
+DeviceSpecific = {
+    /**
+   * 
+   * @param eventName -
+   *            <String> - Name of the Event - Title of the Appt
+   * @param eventText -
+   *            <String> - Text for the Event - Text in appt
+   * @param eventLocation -
+   *            <String> - Location of the Event
+   * @param eventStart -
+   *            <Date> - Object Start Time
+   * @param eventEnd -
+   *            <Date> - Object End Time
+   */
+    addToCalender : function(eventName, eventText, eventLocation,eventStart, eventEnd) {
+      alert('On a mobile device, this would now be added to your calendar.');
+      return false;
+    },
+    /**
+   * 
+   * @param emailSubject -
+   *            <String> - Email Subject
+   * @param emailText -
+   *            <String> - Text for the Event - Text in appt
+   * @param emailTime -
+   *            <Date> - Object Start Time
+   */
+    email : function(emailAddress,emailSubject,emailText,emailTime,emailURL){
+     return false;
+    },
+    openInBrowser : function(url){
+      return false;
+    },
+    setup: function(){}
+};
+
+
+var generateEventString = function(event){
+    var ret = hdf_strings[ event[0] ];
+    ret +='\n';
+    ret += hdf_strings[ event[4] ]
+    ret +='\n';
+    ret += hdf_strings[ event[3] ]
+    ret +='\n';
+    ret += hdf_strings[ event[1] ]
+    ret +='\n';
+    ret += hdf_strings[ event[10] ]
+    ret +='\n';
+    ret += hdf_strings[ event[5] ]
+
+    return ret;
+}
+
+var getStart = function(event){
+    var a = get_date_from_text( hdf_strings[ event[8] ] );
+    var h = hdf_strings[ event[10] ].split(':');
+    var hours = parseInt(h[0]) + 12* ( event[11] === 'PM'  ? 1 : 0)
+    if(hours){
+        a.setHours( hours );
+        a.setMinutes(  parseInt(h[1]) );
+    }
+
+    return a;
+}
+
+var getEnd = function(event){
+    var a = get_date_from_text( hdf_strings[ event[9] ] );
+    var h = hdf_strings[ event[10] ].split(':');
+    var hours = parseInt(h[0]) + 12* ( event[11] === 'PM'  ? 1 : 0)
+    if(hours){
+        a.setHours( hours +1);
+        // Because currently there is no length of time or end date in "event"
+    // we need to just say everything is an hour long :(
+        a.setMinutes(  parseInt(h[1]) );
+    }
+
+    return a;
 }
