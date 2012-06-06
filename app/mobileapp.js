@@ -25,18 +25,25 @@ function initialize_app( )
   
     DeviceSpecific.setup();
     $(".external-link").live('click', function(e) {
-      if(DeviceSpecific.openInBrowser($(this).attr('href')))
+      if(DeviceSpecific.openInBrowser($(this).attr('href'))){
         e.stopPropigation();
+        return false;
+      }
     });
 
     $(".calendar-link").live('click', function(e) {
-      if(DeviceSpecific.addToCalender($('#detail-Title').html(), generateEventString(current_event), $('#detail-Address').html(), getStart(current_event), getEnd(current_event)))
+      if(DeviceSpecific.addToCalender($('#detail-Title').html(), generateEventString(current_event), $('#detail-Address').html(), getStart(current_event), getEnd(current_event))){
         e.stopPropigation();
+        return false;
+      }
+
     });
 
     $(".email-link").live('click', function(e) {
-      if(DeviceSpecific.email('', $('#detail-Title').html(), generateEventString(current_event), $('#detail-Date').html()))
+      if(DeviceSpecific.email('', $('#detail-Title').html(), generateEventString(current_event), $('#detail-Date').html())){
         e.stopPropigation();
+        return false;
+      }
     });
 
     var today = new Date( );
