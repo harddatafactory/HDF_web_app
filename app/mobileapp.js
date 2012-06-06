@@ -26,14 +26,14 @@ function initialize_app( )
     DeviceSpecific.setup();
     $(".external-link").live('click', function(e) {
       if(DeviceSpecific.openInBrowser($(this).attr('href'))){
-        e.stopPropigation();
+        e.stopPropagation();
         return false;
       }
     });
 
     $(".calendar-link").live('click', function(e) {
       if(DeviceSpecific.addToCalender($('#detail-Title').html(), generateEventString(current_event), $('#detail-Address').html(), getStart(current_event), getEnd(current_event))){
-        e.stopPropigation();
+        e.stopPropagation();
         return false;
       }
 
@@ -41,7 +41,7 @@ function initialize_app( )
 
     $(".email-link").live('click', function(e) {
       if(DeviceSpecific.email('', $('#detail-Title').html(), generateEventString(current_event), $('#detail-Date').html())){
-        e.stopPropigation();
+        e.stopPropagation();
         return false;
       }
     });
@@ -724,7 +724,7 @@ DeviceSpecific = {
    */
     addToCalender : function(eventName, eventText, eventLocation,eventStart, eventEnd) {
       alert('On a mobile device, this would now be added to your calendar.');
-      return false;
+      return true;
     },
     /**
    * 
