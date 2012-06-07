@@ -117,7 +117,7 @@ function insert_city_events( )
 	$("#pagetitle").text( 'Select a City Below' );
     }
     $("#aboutsponsor").html( citydata[3] );
-    $("#sponsorname").text( citydata[4] );
+    $(".sponsorname").text( citydata[4] );
 
     if( citydata[1] != '' ) {
 	$("#mytodaylist").append( "<tr class='listitem'><td colspan=2 onclick='showabout( );' style='padding: 5px;'>"
