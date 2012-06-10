@@ -16,6 +16,11 @@ a.detail {
     display:block;
 }
 
+.ititle {
+    font-size: 12px;
+    padding-left: 5px;
+}
+
 hr {
   margin: 5px 0;
 }
@@ -182,36 +187,19 @@ h1, h2 {
     border-image: url(img/blueButton.png) 0 5 0 5 round round; */
 }
 
+#changecity {
+   position: absolute;
+   right: 5px;
+   top: 5px;
+   width: 40px;
+}
+
 .add {
     font-size: 24px;
     line-height: 24px;
     font-weight: bold;
 }
-.whiteButton,
-.grayButton {
-    display: block;
-    border-width: 0 12px;
-    padding: 10px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
-    text-decoration: inherit;
-    color: inherit;
-}
-.whiteButton {
-    -moz-border-image: url(img/whiteButton.png) 0 12 0 12;
-    -webkit-border-image: url(img/whiteButton.png) 0 12 0 12;
-    -o-border-image: url(img/whiteButton.png) 0 12 0 12;
-    border-image: url(img/whiteButton.png) 0 12 0 12;
-    text-shadow: rgba(255, 255, 255, 0.7) 0 1px 0;
-}
-.grayButton {
-    -moz-border-image: url(img/grayButton.png) 0 12 0 12;
-    -webkit-border-image: url(img/grayButton.png) 0 12 0 12;
-    -o-border-image: url(img/grayButton.png) 0 12 0 12;
-    border-image: url(img/grayButton.png) 0 12 0 12;
-    color: #FFFFFF;
-}
+
 /* @end */
 /* @group Lists */
 h1 + ul, h2 + ul, h3 + ul, h4 + ul, h5 + ul, h6 + ul {
@@ -385,16 +373,17 @@ h1 + ul, h2 + ul, h3 + ul, h4 + ul, h5 + ul, h6 + ul {
     background-color: #FFFFFF;
     text-overflow: ellipsis;
     padding-right: 2px;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     font-weight: bold;
 }
 
 .am {
     font-weight: normal;
     color: #808080;
-    font-size: 14px;
+    font-size: 12px;
     padding-bottom: 5px;
+    padding-left: 2px;
 }
 
 .etime {
@@ -404,7 +393,8 @@ h1 + ul, h2 + ul, h3 + ul, h4 + ul, h5 + ul, h6 + ul {
     padding-bottom: 0px;
     text-align: right;
     white-space: nowrap;
-    width: 70px;
+    width: 55px;
+    font-size: 12px;
 }
 
 #mydaylist {
@@ -444,8 +434,8 @@ h1 + ul, h2 + ul, h3 + ul, h4 + ul, h5 + ul, h6 + ul {
 
 #backbutton {
    display: none;
-    position: relative;
-    top: -5px;
+   position: relative;
+   top: -5px;
 }
 
 #aboutthisapp{
@@ -500,10 +490,6 @@ h1 + ul, h2 + ul, h3 + ul, h4 + ul, h5 + ul, h6 + ul {
 	padding:0;
 }
 
-.noevents {
-        display: none;
-}
-
 /* End of iScroll CSS */
 
 /* Highlight an event link when user clicks to see the details page */
@@ -537,9 +523,15 @@ h1 + ul, h2 + ul, h3 + ul, h4 + ul, h5 + ul, h6 + ul {
     font-size: 20px;
     font-weight: bold;
     text-align: center;
-    left:0px;
+    left: 10px;
     text-shadow: rgba(0,0,0,1) 0 -1px 1px;
     text-overflow: ellipsis;
     white-space: nowrap;
     color: #fff;
 }
+
+/* Some events contain long URLs that are too wide.
+   So tell browsers to break long words */
+#detail-Title, #detail-Date, #detail-Address, #detail-Desc {
+   word-wrap: break-word;
+};

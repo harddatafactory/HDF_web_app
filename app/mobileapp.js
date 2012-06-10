@@ -15,36 +15,29 @@ var hdf_strings; // All stings needed for event listings
 var hdf_events; // An array of events that index into hdf_strings
 var current_city = "";
 
-
 var has_a_city_ever_been_selected = 0;
 
 //----------------------------------------------------------------------
 // Set up which elements of the calendar grid can and cannot be clicked on
 function initialize_app( )
 {
-  
-    DeviceSpecific.setup();
-    $(".external-link").live('click', function(e) {
-      if(DeviceSpecific.openInBrowser($(this).attr('href'))){
-        e.stopPropagation();
-        return false;
-      }
-    });
+    // Click event website and it opens in the device's browser
+    // DEVICE SPECIFIC CODE GOES HERE, use var current_event
+    // $(".external-link").live('click', function(e) {
+    //   return false;
+    // });
 
-    $(".calendar-link").live('click', function(e) {
-      if(DeviceSpecific.addToCalender($('#detail-Title').html(), generateEventString(current_event), $('#detail-Address').html(), getStart(current_event), getEnd(current_event))){
-        e.stopPropagation();
-        return false;
-      }
+    // Click "add to calendar" and event is added to device's calendar
+    // DEVICE SPECIFIC CODE GOES HERE, use var current_event
+    // $(".calendar-link").live('click', function(e) {
+    // return false;
+    // });
 
-    });
-
-    $(".email-link").live('click', function(e) {
-      if(DeviceSpecific.email('', $('#detail-Title').html(), generateEventString(current_event), $('#detail-Date').html())){
-        e.stopPropagation();
-        return false;
-      }
-    });
+    // Click "email this event" and an email is built in device's emailer
+    // DEVICE SPECIFIC CODE GOES HERE, use var current_event
+    // $(".email-link").live('click', function(e) {
+    //   return false;
+    // });
 
     var today = new Date( );
     todaydate = date_to_string(today);
@@ -52,9 +45,9 @@ function initialize_app( )
 
     // Use HTML5 local storage to see if city already selected
     if(localStorage && localStorage.currentcity) {
-      select_city(localStorage.currentcity);
+	select_city(localStorage.currentcity);
     } else {
-      change_city('boston');
+	change_city('boston');
     }
 };
 
@@ -112,12 +105,12 @@ function insert_city_events( )
     // Display the city's name in the top bar
     var tmp = citydata[0].split('-');
     if( has_a_city_ever_been_selected ) {
-	$("#pagetitle").text( 'TechCal: ' + tmp[1] );
+	$("#pagetitle").text( tmp[1] + ': Tech' );
     } else {
 	$("#pagetitle").text( 'Select a City Below' );
     }
     $("#aboutsponsor").html( citydata[3] );
-    $(".sponsorname").text( citydata[4] );
+    $("#sponsorname").text( citydata[4] );
 
     if( citydata[1] != '' ) {
 	$("#mytodaylist").append( "<tr class='listitem'><td colspan=2 onclick='showabout( );' style='padding: 5px;'>"
@@ -199,7 +192,6 @@ function togglelist() {
        $("#monthcal").css("display", "none");
        $(".daydate").css("display", "table-row" );  // Show all rows in the list
        $(".listitem").css("display", "table-row" );  // Show all rows in the list
-       $(".noevents").css("display", "none" );  // Hide no event rows in the list
    } else {            // Showing the grid
        $("#mbutton").removeClass('newbutton').addClass('newbluebutton');
        $("#mbutton").text("List");
@@ -215,30 +207,6 @@ function togglelist() {
 }
 
 //----------------------------------------------------------------------
-// Sometimes event descriptions contain a very long word like a URL that
-// contains no whitespace, and the browser can't figure out to linebreak
-// the word. So please a break in every 30 character run of non-whitespace.
-function crop_string( str )
-{
-   var newstr = "";
-   var cnt_non_whitespace = 0;
-   for( var x = 0; x < str.length; x++ ) {
-       if( str[x] == ' ' )
-	   cnt_non_whitespace = 0;
-       else
-	   cnt_non_whitespace++;
-       if( cnt_non_whitespace > 30 ) {
-	   newstr += ' ';
-	   cnt_non_whitespace = 0;
-       }
-
-       newstr += str[x];
-   }
-
-   return newstr;
-}
-
-//----------------------------------------------------------------------
 // The user has clicked on an event! Fill the fields in the "details" DIV
 // and show that and hide everything else. Also sets the selected date to
 // the start date of whatever was clicked.
@@ -249,11 +217,11 @@ function crop_string( str )
 function loaddetail( eventid ) {
    var e = hdf_events[ eventid ];
    setdate( hdf_strings[ e[8] ] );  // The Start Date
-   $("#detail-Title").html( crop_string( hdf_strings[ e[0] ] ) );
-   $("#detail-Date").html( crop_string( hdf_strings[ e[1] ] ) );
-   $("#detail-Address").html( crop_string( hdf_strings[ e[2] ] )
-	      + "<br>" + crop_string( hdf_strings[ e[3] ] ) );
-   $("#detail-Desc").html( crop_string( hdf_strings[ e[4] ] ) );
+   $("#detail-Title").html( hdf_strings[ e[0] ] );
+   $("#detail-Date").html( hdf_strings[ e[1] ] );
+   $("#detail-Address").html( hdf_strings[ e[2] ]
+	      + "<br>" + hdf_strings[ e[3] ] );
+   $("#detail-Desc").html( hdf_strings[ e[4] ] );
    if( e[7] == undefined ) {
       $("#detail-Image").css( "display", 'none');
    } else {
@@ -309,6 +277,7 @@ function loaddetail( eventid ) {
    $("#footer").css("display", "none");
    $("#pagetitle").text("Event Details");
    $("#backbutton").css("display", "inline");
+   $("#changecity").css("display", "none");
    current_event = e;   // Use this when sending email or adding to calendar
    setHeight();     // Reset vertical height of middle space when DOM changes
    if(myScroll){    // Is iScroll initialized?
@@ -329,12 +298,13 @@ function hidedetail( ) {
    $("#eventdetail").css("display", "none");
    $("#footer").css("display", "block");
    $("#backbutton").css("display", "none");
+   $("#changecity").css("display", "inline");
    $("#aboutthisapp").css("display", "none");
    $("#options").css("display", "none");
 
    // Display the city's name in the top bar
    var tmp = citydata[0].split('-');
-   $("#pagetitle").text( 'TechCal: ' + tmp[1] );
+   $("#pagetitle").text( tmp[1] + ': Tech' );
    if( showinggrid ) {
       $("#monthcal").css("display", "inline");
    }
@@ -345,6 +315,8 @@ function hidedetail( ) {
 //----------------------------------------------------------------------
 // Display the 'options' page
 function showoptions( ) {
+   event.stopPropagation( ); // Don't let click trigger parent elements
+
    // Hide the grid calendar and flat list views
    $("#monthcal").css("display", "none");
    $("#mytodaylist").css("display", "none");
@@ -356,6 +328,7 @@ function showoptions( ) {
    $("#options").css("display", "inline");
    $("#pagetitle").text("Pick a Metro");
    $("#backbutton").css("display", "inline");
+   $("#changecity").css("display", "none");
 
    scroll_list( );
 }
@@ -375,6 +348,7 @@ function showabout( ) {
    $("#aboutthisapp").css("display", "inline");
    $("#pagetitle").text( citydata[4] );
    $("#backbutton").css("display", "inline");
+   $("#changecity").css("display", "none");
    scroll_list( );
 }
 
@@ -542,14 +516,14 @@ function make_flat_list( )
 	    + current_date.getDate( ) + " " + current_date.getFullYear( );
         var compute_date_str = date_to_string( current_date );
 
-        if( flat_list[ compute_date_str ] ) {   // has events? list it!
-            // Add the table row representing the current date
-   	    html_str += "<tr id='list" + compute_date_str + "' class='daydate'><td>"
+	html_str += "<tr id='list" + compute_date_str + "' class='daydate'><td>"
 	    + days_abbrev[ current_date.getDay( ) ] + "</td><td>" + print_date_str + "&nbsp;</td></tr>\n";
 
+        if( flat_list[ compute_date_str ] ) {   // has events? list it!
+            // Add the table row representing the current date
 	    html_str += flat_list[ compute_date_str ];
 	} else {
-            html_str += "<tr id='list" + compute_date_str + "' class='noevents list" + compute_date_str + "'><td></td><td><td style='width: 100%;'>No events</td></tr>";
+            html_str += "<tr class='listitem list" + compute_date_str + "'><td class='etime'></td><td class='ititle'>No events</td></tr>";
 	}
 
 	current_date.setDate( current_date.getDate( ) + 1 );  // add a day		   
@@ -659,7 +633,7 @@ function make_grid_cal( )
 		html_str += "><div>" + current_day.getDate( ) + "</div><span>";
 
 	        // Are there any events on the current date? Add a dot to note.
-		if( flat_list[ date_str ] ) {
+		if( current_day >= today && flat_list[ date_str ] ) {
 		    html_str += "\&bull;";
 		} else {
 		    html_str += "\&nbsp;";
@@ -705,84 +679,4 @@ function date_to_string( d )
     str += mday;
 
     return str;
-}
-
-
-DeviceSpecific = {
-    /**
-   * 
-   * @param eventName -
-   *            <String> - Name of the Event - Title of the Appt
-   * @param eventText -
-   *            <String> - Text for the Event - Text in appt
-   * @param eventLocation -
-   *            <String> - Location of the Event
-   * @param eventStart -
-   *            <Date> - Object Start Time
-   * @param eventEnd -
-   *            <Date> - Object End Time
-   */
-    addToCalender : function(eventName, eventText, eventLocation,eventStart, eventEnd) {
-      alert('On a mobile device, this would now be added to your calendar.');
-      return true;
-    },
-    /**
-   * 
-   * @param emailSubject -
-   *            <String> - Email Subject
-   * @param emailText -
-   *            <String> - Text for the Event - Text in appt
-   * @param emailTime -
-   *            <Date> - Object Start Time
-   */
-    email : function(emailAddress,emailSubject,emailText,emailTime,emailURL){
-     return false;
-    },
-    openInBrowser : function(url){
-      return false;
-    },
-    setup: function(){}
-};
-
-
-var generateEventString = function(event){
-    var ret = hdf_strings[ event[0] ];
-    ret +='\n';
-    ret += hdf_strings[ event[4] ]
-    ret +='\n';
-    ret += hdf_strings[ event[3] ]
-    ret +='\n';
-    ret += hdf_strings[ event[1] ]
-    ret +='\n';
-    ret += hdf_strings[ event[10] ]
-    ret +='\n';
-    ret += hdf_strings[ event[5] ]
-
-    return ret;
-}
-
-var getStart = function(event){
-    var a = get_date_from_text( hdf_strings[ event[8] ] );
-    var h = hdf_strings[ event[10] ].split(':');
-    var hours = parseInt(h[0]) + 12* ( event[11] === 'PM'  ? 1 : 0)
-    if(hours){
-        a.setHours( hours );
-        a.setMinutes(  parseInt(h[1]) );
-    }
-
-    return a;
-}
-
-var getEnd = function(event){
-    var a = get_date_from_text( hdf_strings[ event[9] ] );
-    var h = hdf_strings[ event[10] ].split(':');
-    var hours = parseInt(h[0]) + 12* ( event[11] === 'PM'  ? 1 : 0)
-    if(hours){
-        a.setHours( hours +1);
-        // Because currently there is no length of time or end date in "event"
-    // we need to just say everything is an hour long :(
-        a.setMinutes(  parseInt(h[1]) );
-    }
-
-    return a;
 }
