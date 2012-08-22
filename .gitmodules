@@ -1,3 +1,3 @@
 [submodule "public"]
 	path = public
-	url = git@github.com:koombea/HDF_shared_public_files.git
+	url = git@github.com:harddatafactory/HDF_shared_public_files.git
